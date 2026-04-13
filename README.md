@@ -87,3 +87,26 @@ https://github.com/cedrick13bienvenue/tooling-jenkins
 | DB traffic | Web Servers → DB Server (TCP 3306) |
 | NFS traffic | Web Servers ↔ NFS Server (TCP/UDP 2049, 111) |
 | Deploy traffic | Jenkins Server → NFS Server (TCP 22) |
+
+---
+
+## Prerequisites
+
+The following servers from Projects 7 and 8 must be **Running** with **2/2 status checks passed** in your AWS Console before starting this project:
+
+| Server | Name | Role |
+|---|---|---|
+| NFS Server | `Project7-NFS` | Shared file storage for Web Servers |
+| Web Server 1 | `Project7-Web-1` | Serves the Tooling Website |
+| Web Server 2 | `Project7-Web-2` | Serves the Tooling Website |
+| DB Server | `Project7-DB` | MySQL database backend |
+| Load Balancer | `Project-8-apache-lb` | Routes traffic to Web Servers |
+
+**Prerequisite checklist:**
+- All 5 instances above are in `Running` state with `2/2 checks passed`
+- The Tooling Website loads correctly at `http://<LB-PUBLIC-IP>/index.php`
+- Both Web Servers have `/var/www` mounted from the NFS Server
+- MySQL is running on the DB Server with the `tooling` database and `webaccess` user intact
+
+> **Expected Output**: AWS EC2 Instances list showing all 5 existing servers in `Running` state with `2/2 checks passed`.
+> ![AWS EC2 console — all existing instances (Project7-NFS, Project7-Web-1, Project7-Web-2, Project7-DB, Project-8-apache-lb) showing Running state with 2/2 status checks passed](screenshoots/all-instances-running.png)
