@@ -29,3 +29,61 @@ In this project, Jenkins acts as the CI server that automates the deployment pip
 | Version Control | Git + GitHub |
 | Deployment Method | Publish Over SSH (Jenkins plugin) |
 | Code Repository | `https://github.com/cedrick13bienvenue/tooling-jenkins` |
+
+---
+
+## Architecture
+
+This project adds a Jenkins Server and a GitHub webhook to the existing Project 8 infrastructure. The updated deployment flow works as follows:
+
+1. A developer pushes code to the GitHub `tooling-jenkins` repository
+2. GitHub sends a webhook notification to the Jenkins Server
+3. Jenkins pulls the latest code and copies it to `/mnt/apps` on the NFS Server via SSH
+4. Both Web Servers (which mount `/mnt/apps` as `/var/www`) immediately serve the updated code
+5. Client traffic continues to flow through the Load Balancer as before
+
+```
+          GitHub Repository
+https://github.com/cedrick13bienvenue/tooling-jenkins
+                |
+             Webhook
+                |
+         Jenkins Server              ← Ubuntu 24.04 (Jenkins 2.x)
+       <JENKINS-PUBLIC-IP>
+                |
+            TCP 22 (SSH Deploy)
+                |
+           NFS Server                ← RHEL 8 (/mnt/apps)
+         <NFS-PRIVATE-IP>
+         /              \
+  TCP/UDP 2049        TCP/UDP 2049
+  UDP 111             UDP 111
+       /                    \
+ Web-Server-1          Web-Server-2  ← RHEL 8 (Apache httpd + PHP)
+      |                      |
+      └──────────┬────────────┘
+             TCP 3306
+                 |
+            DB Server               ← Ubuntu 24.04 (MySQL)
+          <DB-PRIVATE-IP>
+
+ Web-Server-1          Web-Server-2
+      \                      /
+       \                    /
+        TCP 80          TCP 80
+              \        /
+           Load Balancer             ← Ubuntu 24.04 (Apache2)
+         <LB-PUBLIC-IP>
+                |
+             TCP 80
+                |
+             Client
+```
+
+**Traffic types:**
+| Traffic | Path |
+|---|---|
+| Client traffic | Client → Load Balancer → Web Servers |
+| DB traffic | Web Servers → DB Server (TCP 3306) |
+| NFS traffic | Web Servers ↔ NFS Server (TCP/UDP 2049, 111) |
+| Deploy traffic | Jenkins Server → NFS Server (TCP 22) |
