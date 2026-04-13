@@ -110,3 +110,73 @@ The following servers from Projects 7 and 8 must be **Running** with **2/2 statu
 
 > **Expected Output**: AWS EC2 Instances list showing all 5 existing servers in `Running` state with `2/2 checks passed`.
 > ![AWS EC2 console — all existing instances (Project7-NFS, Project7-Web-1, Project7-Web-2, Project7-DB, Project-8-apache-lb) showing Running state with 2/2 status checks passed](screenshoots/all-instances-running.png)
+
+---
+
+## Phase 1: Launch the Jenkins EC2 Instance
+
+### 1.1 Create the EC2 Instance
+
+**1.** Sign in to the **AWS Management Console** → navigate to **EC2** → click **Instances** → click **Launch instances**.
+
+**2.** Under **Name and tags**:
+
+| Field | Value |
+|---|---|
+| **Name** | `Project9-Jenkins` |
+
+**3.** Under **Application and OS Images (Amazon Machine Image)**:
+
+| Field | Value |
+|---|---|
+| **AMI** | Click **"Ubuntu"** from the quick-select tabs |
+| **Version** | `Ubuntu Server 24.04 LTS (HVM), SSD Volume Type` |
+| **Architecture** | `64-bit (x86)` |
+
+**4.** Under **Instance type**:
+
+| Field | Value |
+|---|---|
+| **Instance type** | `t2.micro` (Free tier eligible). Use `t3.micro` if unavailable. |
+
+**5.** Under **Key pair (login)**:
+
+| Field | Value |
+|---|---|
+| **Key pair name** | Select your existing `.pem` key pair |
+
+**6.** Under **Network settings** → click **Edit**:
+
+| Field | Value |
+|---|---|
+| **VPC** | Default VPC |
+| **Subnet** | Leave as default |
+| **Auto-assign public IP** | `Enable` |
+| **Firewall** | Select **"Create security group"** |
+| **Security group name** | `Project9-Jenkins-SG` |
+| **Description** | `Security group for Jenkins CI server` |
+
+**Inbound Rules:**
+
+| Type | Protocol | Port | Source |
+|---|---|---|---|
+| `SSH` | `TCP` | `22` | `My IP` |
+| `Custom TCP` | `TCP` | `8080` | `Anywhere-IPv4` (0.0.0.0/0) |
+
+> **Note**: Port 8080 is the default port Jenkins listens on. It must be open so you can access the Jenkins UI from your browser and so GitHub webhooks can reach it.
+
+**7.** Under **Configure storage**:
+
+| Field | Value |
+|---|---|
+| **Root volume size** | `8 GiB` (default) |
+| **Volume type** | `gp3` |
+
+**8.** Click **Launch instance**. Click **View all instances** to return to the instances list. Wait until:
+- **Instance State** = `Running`
+- **Status checks** = `2/2 checks passed`
+
+**9.** Click on the `Project9-Jenkins` instance row to select it. In the details panel at the bottom, note down the **Public IPv4 address** — you will use this throughout the project.
+
+> **Expected Output**: EC2 console showing `Project9-Jenkins` in `Running` state with `2/2 checks passed` and the Public IPv4 address visible in the details panel.
+> ![AWS EC2 console — Project9-Jenkins instance in Running state with 2/2 status checks passed and Public IPv4 address visible in the details panel](screenshoots/jenkins-instance-running.png)
