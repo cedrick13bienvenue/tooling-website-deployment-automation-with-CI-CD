@@ -301,3 +301,72 @@ Look for the line: `Active: active (running)` — it should appear in green. Pre
 
 > **Expected Output**: Terminal showing `sudo systemctl status jenkins` with `Active: active (running)` in green.
 > ![Terminal — sudo systemctl status jenkins output showing active (running) in green with the Jenkins process details](screenshoots/jenkins-status-active.png)
+
+---
+
+## Phase 3: Complete the Jenkins Initial Setup in the Browser
+
+### 3.1 Open Jenkins in the Browser
+
+**23.** Open a new tab in your browser and navigate to:
+
+```
+http://<JENKINS-PUBLIC-IP>:8080
+```
+
+> **Note**: Use the **Public IPv4 address** of your Jenkins instance — not the private IP (`172.31.x.x`). The private IP is only reachable within the AWS VPC and will time out in your browser.
+
+You will see a page titled **"Unlock Jenkins"**.
+
+> **Expected Output**: Browser showing the Jenkins "Unlock Jenkins" page with the Administrator password field.
+> ![Browser — Jenkins Unlock Jenkins page showing the Administrator password text field and the path to the initialAdminPassword file](screenshoots/jenkins-unlock-page.png)
+
+---
+
+### 3.2 Retrieve the Initial Admin Password
+
+**24.** Go back to your terminal (still connected to the Jenkins server) and run:
+
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+**25.** Copy the long alphanumeric string that is printed (e.g. `a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4`).
+
+**26.** Paste it into the **Administrator password** field on the Unlock Jenkins page in your browser, then click **Continue**.
+
+---
+
+### 3.3 Install Suggested Plugins
+
+**27.** On the "Customize Jenkins" page, click **"Install suggested plugins"** (the left option with the cloud icon).
+
+Jenkins will download and install all standard plugins. This takes 3–7 minutes depending on network speed. Do not refresh the page.
+
+> **Expected Output**: Jenkins plugin installation progress screen showing multiple plugins with loading bars.
+> ![Browser — Jenkins plugin installation progress screen showing multiple plugins being installed with progress indicators](screenshoots/jenkins-plugins-installing.png)
+
+---
+
+### 3.4 Create the First Admin User
+
+**28.** After plugins finish installing, fill in the **"Create First Admin User"** form:
+
+| Field | Value |
+|---|---|
+| **Username** | Choose a username (e.g. `admin`) |
+| **Password** | Choose a strong password |
+| **Confirm password** | Repeat the password |
+| **Full name** | Your full name |
+| **E-mail address** | Your email |
+
+**29.** Click **"Save and Continue"**.
+
+**30.** On the **"Instance Configuration"** page, leave the Jenkins URL as pre-filled (`http://<JENKINS-PUBLIC-IP>:8080/`) and click **"Save and Finish"**.
+
+**31.** Click **"Start using Jenkins"**.
+
+You are now on the Jenkins dashboard — the main home page with the left sidebar showing **New Item**, **People**, **Build History**, etc.
+
+> **Expected Output**: Browser showing the Jenkins main dashboard after first login.
+> ![Browser — Jenkins main dashboard after initial setup showing the Welcome to Jenkins screen with the left sidebar navigation](screenshoots/jenkins-dashboard.png)
