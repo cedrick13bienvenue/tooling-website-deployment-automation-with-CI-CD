@@ -370,3 +370,107 @@ You are now on the Jenkins dashboard — the main home page with the left sideba
 
 > **Expected Output**: Browser showing the Jenkins main dashboard after first login.
 > ![Browser — Jenkins main dashboard after initial setup showing the Welcome to Jenkins screen with the left sidebar navigation](screenshoots/jenkins-dashboard.png)
+
+---
+
+## Phase 4: Connect the GitHub Repository to Jenkins
+
+### 4.1 Prepare the GitHub Repository
+
+**32.** Fork the tooling repository from the Darey.io GitHub account:
+
+```
+https://github.com/darey-io/tooling
+```
+
+On the fork page, set the **Repository name** to `tooling-jenkins`, ensure your GitHub account is selected as the owner, then click **Create fork**.
+
+**33.** After forking, rename the repository if needed by going to the repo **Settings** → change the name to `tooling-jenkins` → click **Rename**. Your repo will now be at:
+
+```
+https://github.com/cedrick13bienvenue/tooling-jenkins
+```
+
+---
+
+### 4.2 Create a Jenkins Freestyle Job
+
+**34.** On the Jenkins dashboard, click **"New Item"** in the left sidebar.
+
+**35.** Fill in the New Item form:
+
+| Field | Value |
+|---|---|
+| **Item name** | `tooling-website` |
+| **Project type** | `Freestyle project` |
+
+Click **OK**.
+
+---
+
+### 4.3 Configure Source Code Management
+
+**36.** On the job configuration page, scroll to **"Source Code Management"** and select the **Git** radio button.
+
+**37.** In the **Repository URL** field, enter:
+
+```
+https://github.com/cedrick13bienvenue/tooling-jenkins.git
+```
+
+> **Note**: Include the `.git` suffix. A red error warning will appear under the field — this is expected until credentials are added.
+
+**38.** Next to the **Credentials** dropdown, click **"+ Add"** → **"Global"** → select **"Username with password"** from the credential type list → click **Next**.
+
+**39.** Fill in the credentials form:
+
+| Field | Value |
+|---|---|
+| **Kind** | `Username with password` |
+| **Username** | `cedrick13bienvenue` |
+| **Password** | Your GitHub Personal Access Token (`ghp_...`) |
+| **Description** | `GitHub PAT` |
+
+> **Note**: GitHub no longer accepts your account password for Git operations. You must use a **Personal Access Token (PAT)**. To create one: GitHub → Profile → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic). Set the `repo` scope and copy the token immediately — GitHub will not show it again.
+
+Click **Create**.
+
+**40.** In the **Credentials** dropdown, select the credentials you just added. The red error warning under the Repository URL should disappear — confirming Jenkins can access the repo.
+
+**41.** In the **"Branch Specifier"** field, change `*/master` to match your repo's default branch:
+
+```
+*/master
+```
+
+> **Note**: The `darey-io/tooling` repo uses `master` as its default branch. Verify the branch name by checking the branch dropdown on your GitHub repo page.
+
+**42.** Scroll to **"Build Triggers"** and check **"GitHub hook trigger for GITScm polling"**.
+
+**43.** Scroll to **"Build Steps"** → click **"Add build step"** → select **"Execute shell"**. Enter:
+
+```bash
+echo "Jenkins build triggered successfully"
+ls -la $WORKSPACE
+```
+
+**44.** Click **Save**.
+
+> **Expected Output**: Jenkins job configuration page showing the SCM section with the repository URL filled in, credentials selected with no red error, and the branch specifier set.
+> ![Browser — Jenkins job config Source Code Management section showing the tooling-jenkins repo URL, credentials selected, and branch specifier with no error message](screenshoots/jenkins-job-scm-config.png)
+
+---
+
+### 4.4 Run the First Manual Build
+
+**45.** On the `tooling-website` job page, click **"Build Now"** in the left sidebar.
+
+**46.** In the **Build History** panel at the bottom left, wait for **#1** to finish. A **blue circle** means success; a **red circle** means failure.
+
+**47.** Click on **#1** → **"Console Output"** and verify:
+- Jenkins cloned your `tooling-jenkins` repository
+- The file listing from `ls -la $WORKSPACE` is visible
+- The last line reads: `Finished: SUCCESS`
+
+> **Expected Output**: Jenkins Console Output for Build #1 showing the cloned repository files and `Finished: SUCCESS` at the bottom.
+> ![Browser — Jenkins Console Output for Build #1 showing repository files cloned from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build1-success.png)
