@@ -544,3 +544,22 @@ git push origin master
 
 > **Expected Output**: Jenkins Console Output for Build #2 showing the automatic webhook trigger and `Finished: SUCCESS`.
 > ![Browser — Jenkins Console Output for Build #2 showing files pulled from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build2-console-output.png)
+
+---
+
+## Screenshots Reference
+
+| # | File | Description |
+|---|---|---|
+| 1 | `screenshoots/all-instances-running.png` | AWS EC2 console — all existing instances Running with 2/2 checks passed |
+| 2 | `screenshoots/jenkins-instance-running.png` | AWS EC2 console — Project9-Jenkins Running with 2/2 checks and Public IP visible |
+| 3 | `screenshoots/java-version.png` | Terminal — `java -version` output showing OpenJDK 17 |
+| 4 | `screenshoots/jenkins-status-active.png` | Terminal — `systemctl status jenkins` showing active (running) in green |
+| 5 | `screenshoots/jenkins-unlock-page.png` | Browser — Jenkins Unlock Jenkins page |
+| 6 | `screenshoots/jenkins-plugins-installing.png` | Browser — Jenkins plugin installation progress screen |
+| 7 | `screenshoots/jenkins-dashboard.png` | Browser — Jenkins main dashboard after first login |
+| 8 | `screenshoots/jenkins-job-scm-config.png` | Browser — Jenkins job SCM config with repo URL, credentials, and branch set |
+| 9 | `screenshoots/jenkins-build1-success.png` | Browser — Jenkins Console Output Build #1 — Finished: SUCCESS |
+| 10 | `screenshoots/github-webhook-ping-success.png` | GitHub — webhook Recent Deliveries showing ping with green checkmark and 200 response |
+| 11 | `screenshoots/jenkins-build2-auto-triggered.png` | Browser — Jenkins job showing Build #2 auto-triggered with blue circle |
+| 12 | `screenshoots/jenkins-build2-console-output.png` | Browser — Jenkins Console Output Build #2 — Finished: SUCCESS |
