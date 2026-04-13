@@ -9,3 +9,23 @@ This project eliminates manual deployments entirely. A **Jenkins server** is add
 **Continuous Integration (CI)** is a software development strategy that increases the speed and quality of software delivery by having developers commit code in small increments (at least daily), which is then automatically built and tested before it is merged with the shared repository. The goal is to catch integration issues early and deliver working software faster.
 
 In this project, Jenkins acts as the CI server that automates the deployment pipeline from code push to live website update — with zero manual intervention after the initial setup.
+
+---
+
+## Technologies Used
+
+| Component | Details |
+|---|---|
+| Infrastructure | AWS EC2 |
+| Jenkins Server OS | Ubuntu Server 24.04 LTS |
+| Web Server OS | Red Hat Enterprise Linux 8 |
+| Database OS | Ubuntu Server 24.04 LTS |
+| NFS Server OS | Red Hat Enterprise Linux 8 |
+| Load Balancer OS | Ubuntu Server 24.04 LTS |
+| CI Server | Jenkins 2.x (LTS) |
+| Load Balancer Software | Apache2 (`mod_proxy_balancer`) |
+| Web Server Software | Apache (`httpd`) + PHP |
+| Database | MySQL |
+| Version Control | Git + GitHub |
+| Deployment Method | Publish Over SSH (Jenkins plugin) |
+| Code Repository | `https://github.com/cedrick13bienvenue/tooling-jenkins` |
