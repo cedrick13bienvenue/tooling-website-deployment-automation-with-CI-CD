@@ -474,3 +474,73 @@ ls -la $WORKSPACE
 
 > **Expected Output**: Jenkins Console Output for Build #1 showing the cloned repository files and `Finished: SUCCESS` at the bottom.
 > ![Browser — Jenkins Console Output for Build #1 showing repository files cloned from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build1-success.png)
+
+---
+
+## Phase 5: Configure GitHub Webhook to Auto-Trigger Jenkins
+
+### 5.1 Add the Webhook in GitHub
+
+**48.** Go to your `tooling-jenkins` repository on GitHub:
+
+```
+https://github.com/cedrick13bienvenue/tooling-jenkins
+```
+
+**49.** Click the **Settings** tab → in the left sidebar click **"Webhooks"** → click **"Add webhook"**.
+
+**50.** Fill in the webhook form:
+
+| Field | Value |
+|---|---|
+| **Payload URL** | `http://<JENKINS-PUBLIC-IP>:8080/github-webhook/` |
+| **Content type** | `application/json` |
+| **Secret** | Leave blank |
+| **Which events trigger this webhook?** | `Just the push event` |
+| **Active** | Checked |
+
+> **Note**: The trailing `/` at the end of the Payload URL is required. Replace `<JENKINS-PUBLIC-IP>` with the actual public IP of your `Project9-Jenkins` instance.
+
+**51.** Click **"Add webhook"**.
+
+**52.** GitHub automatically sends a `ping` event to Jenkins to verify the connection. Click on the webhook entry, scroll down to **"Recent Deliveries"**, and confirm the ping delivery shows a **green checkmark** with **Response code: 200**.
+
+> **Expected Output**: GitHub webhook "Recent Deliveries" showing a ping event with a green checkmark and Response code: 200.
+> ![GitHub — webhook Recent Deliveries section showing the ping event with a green checkmark and Response tab displaying Response code 200](screenshoots/github-webhook-ping-success.png)
+
+---
+
+### 5.2 Test the Webhook with a Git Push
+
+**53.** On your local machine, clone the `tooling-jenkins` repository:
+
+```bash
+git clone https://github.com/cedrick13bienvenue/tooling-jenkins.git
+cd tooling-jenkins
+```
+
+**54.** Make a small change to trigger a build:
+
+```bash
+echo "# CI/CD pipeline test - Project 9" >> README.md
+```
+
+**55.** Stage, commit, and push:
+
+```bash
+git add README.md
+git commit -m "test jenkins webhook trigger"
+git push origin master
+```
+
+> **Note**: When prompted for a password during `git push`, use your GitHub Personal Access Token (`ghp_...`), not your GitHub account password.
+
+**56.** Switch to your Jenkins browser tab. Within 5–10 seconds, **Build #2** should appear in the Build History — triggered **automatically** by the GitHub webhook, without clicking "Build Now".
+
+> **Expected Output**: Jenkins job page showing Build #2 triggered automatically with a blue circle (success).
+> ![Browser — Jenkins tooling-website job page showing Build #2 in the Build History with a blue circle triggered automatically after the git push](screenshoots/jenkins-build2-auto-triggered.png)
+
+**57.** Click on **#2** → **"Console Output"** and confirm the build ends with `Finished: SUCCESS`.
+
+> **Expected Output**: Jenkins Console Output for Build #2 showing the automatic webhook trigger and `Finished: SUCCESS`.
+> ![Browser — Jenkins Console Output for Build #2 showing files pulled from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build2-console-output.png)
