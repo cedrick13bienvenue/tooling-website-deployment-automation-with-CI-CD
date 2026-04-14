@@ -795,9 +795,83 @@ Finished: SUCCESS
 > **Expected Output**: Jenkins Console Output showing all three stages — Git checkout, build step, and `SSH: Transferred XX file(s)` — followed by `Finished: SUCCESS`.
 > ![Browser — Jenkins Console Output for the auto-triggered build showing SSH: Transferred XX file(s) and Finished: SUCCESS at the bottom](screenshoots/jenkins-deploy-console-success.png)
 
+### 7.3 Verify Files Arrived on the NFS Server
+
+**93.** SSH into the NFS server:
+
+```bash
+ssh -i /path/to/cedriq-ec2.pem ec2-user@<NFS-PUBLIC-IP>
+```
+
+**94.** List the contents of `/mnt/apps` and check the timestamps — they should show the current time:
+
+```bash
+ls -la /mnt/apps/
+```
+
+**95.** Confirm your specific change made it:
+
+```bash
+tail -5 /mnt/apps/html/index.php
+```
+
+You should see the comment at the bottom:
+
+```
+<!-- Deployed by Jenkins - Project 9 -->
+```
+
+> **Expected Output**: NFS server terminal showing `ls -la /mnt/apps/` with today's timestamps and `tail -5 /mnt/apps/html/index.php` showing the deployed comment.
+> ![Terminal — NFS server showing ls -la /mnt/apps/ with current timestamps and tail of index.php showing the Jenkins deployment comment](screenshoots/nfs-files-deployed.png)
+
+**96.** Type `exit` to leave the NFS server.
+
+---
+
+### 7.4 Confirm the Live Website
+
+**97.** Open your browser and visit the Tooling Website through the Load Balancer:
+
+```
+http://<LB-PUBLIC-IP>/index.php
+```
+
+Replace `<LB-PUBLIC-IP>` with the public IP of your `Project-8-apache-lb` instance from the AWS Console.
+
+**98.** The Tooling Website login page should load — confirming the complete pipeline is working:
+- GitHub webhook triggered Jenkins on push ✓
+- Jenkins pulled the latest code ✓
+- Jenkins deployed it to `/mnt/apps` on the NFS server ✓
+- Both Web Servers (mounting `/mnt/apps`) served the updated code ✓
+- The Load Balancer routed traffic correctly ✓
+
+> **Expected Output**: Browser showing the Tooling Website login page loaded via the Load Balancer public IP.
+> ![Browser — Tooling Website login page loaded successfully via the Load Balancer URL confirming the full CI/CD pipeline is working](screenshoots/tooling-website-live.png)
+
 ---
 
 ## Screenshots Reference
+
+| # | File | Description |
+|---|---|---|
+| 1 | `screenshoots/all-instances-running.png` | AWS EC2 — all existing instances Running with 2/2 checks passed |
+| 2 | `screenshoots/jenkins-instance-running.png` | AWS EC2 — Project9-Jenkins Running with Public IP visible |
+| 3 | `screenshoots/java-version.png` | Terminal — `java -version` showing OpenJDK 17 |
+| 4 | `screenshoots/jenkins-status-active.png` | Terminal — `systemctl status jenkins` showing active (running) |
+| 5 | `screenshoots/jenkins-unlock-page.png` | Browser — Jenkins Unlock Jenkins page |
+| 6 | `screenshoots/jenkins-plugins-installing.png` | Browser — Jenkins plugin installation progress screen |
+| 7 | `screenshoots/jenkins-dashboard.png` | Browser — Jenkins main dashboard after first login |
+| 8 | `screenshoots/jenkins-job-scm-config.png` | Browser — Jenkins job SCM config with repo URL and credentials |
+| 9 | `screenshoots/jenkins-build1-success.png` | Browser — Jenkins Build #1 Console Output — Finished: SUCCESS |
+| 10 | `screenshoots/github-webhook-ping-success.png` | GitHub — webhook ping delivery with green checkmark and Response 200 |
+| 11 | `screenshoots/jenkins-build-auto-triggered.png` | Browser — Jenkins Console Output auto-triggered by webhook — Finished: SUCCESS |
+| 12 | `screenshoots/publish-over-ssh-installed.png` | Browser — Publish Over SSH plugin installed with all Success statuses |
+| 13 | `screenshoots/jenkins-ssh-config-success.png` | Browser — Jenkins SSH server config with Test Configuration: Success |
+| 14 | `screenshoots/jenkins-job-postbuild-config.png` | Browser — Jenkins job Post-build Actions with SSH transfer configured |
+| 15 | `screenshoots/nfs-apps-permissions.png` | Terminal — NFS server `/mnt/apps` owned by ec2-user |
+| 16 | `screenshoots/jenkins-deploy-console-success.png` | Browser — Jenkins Console Output showing SSH: Transferred files + Finished: SUCCESS |
+| 17 | `screenshoots/nfs-files-deployed.png` | Terminal — NFS server `/mnt/apps` with current timestamps and deployed comment |
+| 18 | `screenshoots/tooling-website-live.png` | Browser — Tooling Website login page loaded via Load Balancer URL |
 
 | # | File | Description |
 |---|---|---|
