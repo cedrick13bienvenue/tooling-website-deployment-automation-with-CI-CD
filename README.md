@@ -662,6 +662,37 @@ It should return **"Success"**. If it fails:
 
 ---
 
+### 6.5 Update the Jenkins Job to Deploy Files to NFS
+
+**77.** In Jenkins, click on the **`tooling-website`** job → click **"Configure"** in the left sidebar.
+
+**78.** Scroll to **"Build Steps"**. In the Execute Shell text area, replace the existing content with:
+
+```bash
+echo "Build workspace: $WORKSPACE"
+```
+
+**79.** Scroll further down to **"Post-build Actions"** → click **"Add post-build action"** → select **"Send build artifacts over SSH"**.
+
+**80.** Fill in the SSH transfer section:
+
+| Field | Value |
+|---|---|
+| **SSH Server** | `NFS-Server` (select from dropdown) |
+| **Source files** | `**` |
+| **Remove prefix** | Leave blank |
+| **Remote directory** | Leave blank (defaults to `/mnt/apps`) |
+| **Exec command** | Leave blank |
+
+> **Note**: `**` means "transfer every file and folder from the Jenkins workspace". This copies the entire contents of the `tooling-jenkins` repo to `/mnt/apps` on the NFS server after every successful build.
+
+**81.** Click **"Save"**.
+
+> **Expected Output**: Jenkins job configuration page showing the Post-build Actions section with "Send build artifacts over SSH" configured — NFS-Server selected and `**` in the Source files field.
+> ![Browser — Jenkins tooling-website job Post-build Actions section showing Send build artifacts over SSH with NFS-Server selected and ** in Source files](screenshoots/jenkins-job-postbuild-config.png)
+
+---
+
 ## Screenshots Reference
 
 | # | File | Description |
