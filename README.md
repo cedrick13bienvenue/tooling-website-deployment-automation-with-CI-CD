@@ -740,6 +740,63 @@ drwxr-xr-x  2 ec2-user ec2-user 4096 ...  apps
 
 ---
 
+## Phase 7: End-to-End Test — Push Code and Watch the Full Pipeline Run
+
+This is the final test that confirms the entire CI/CD pipeline works. A single `git push` from your local machine should trigger Jenkins to automatically pull the code and deploy it to the NFS server — with no manual steps in between.
+
+### 7.1 Push a Code Change
+
+**87.** On your local machine, go into your `tooling-jenkins` folder:
+
+```bash
+cd /path/to/tooling-jenkins
+```
+
+**88.** Add a comment to the main PHP file so you can verify the deployment:
+
+```bash
+echo "<!-- Deployed by Jenkins - Project 9 -->" >> html/index.php
+```
+
+**89.** Stage, commit, and push:
+
+```bash
+git add html/index.php
+git commit -m "add jenkins deployment comment to index.php"
+git push origin master
+```
+
+---
+
+### 7.2 Watch Jenkins React Automatically
+
+**90.** Switch to your Jenkins browser tab immediately after pushing.
+
+**91.** Within 5–10 seconds a new build appears in the Build History — triggered automatically by the GitHub webhook.
+
+**92.** Click on the build → **"Console Output"**. Read through it carefully and confirm all three stages completed:
+
+**Stage 1 — Code checkout:**
+```
+Fetching upstream changes from https://github.com/cedrick13bienvenue/tooling-jenkins.git
+```
+
+**Stage 2 — Build step:**
+```
+Build workspace: /var/lib/jenkins/workspace/tooling-website
+```
+
+**Stage 3 — SSH file transfer:**
+```
+SSH: Transferred XX file(s)
+Finished: SUCCESS
+```
+
+> **Expected Output**: Jenkins Console Output showing all three stages — Git checkout, build step, and `SSH: Transferred XX file(s)` — followed by `Finished: SUCCESS`.
+> ![Browser — Jenkins Console Output for the auto-triggered build showing SSH: Transferred XX file(s) and Finished: SUCCESS at the bottom](screenshoots/jenkins-deploy-console-success.png)
+
+---
+
 ## Screenshots Reference
 
 | # | File | Description |
