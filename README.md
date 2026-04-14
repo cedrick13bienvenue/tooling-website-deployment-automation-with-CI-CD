@@ -693,6 +693,53 @@ echo "Build workspace: $WORKSPACE"
 
 ---
 
+### 6.6 Set Correct Permissions on the NFS Server
+
+Jenkins logs into the NFS server as `ec2-user` and writes files to `/mnt/apps`. If `ec2-user` does not own that directory, every build will fail with a **"Permission denied"** error. Fix this before running the pipeline.
+
+**82.** SSH into the NFS server from your terminal:
+
+```bash
+ssh -i /path/to/cedriq-ec2.pem ec2-user@<NFS-PUBLIC-IP>
+```
+
+**83.** Check the current ownership of `/mnt/apps`:
+
+```bash
+ls -la /mnt/
+```
+
+You will likely see `/mnt/apps` owned by `root`:
+
+```
+drwxr-xr-x  2 root     root     4096 ...  apps
+```
+
+**84.** Change ownership so `ec2-user` can write to it:
+
+```bash
+sudo chown -R ec2-user:ec2-user /mnt/apps
+```
+
+**85.** Verify the change:
+
+```bash
+ls -la /mnt/
+```
+
+Expected output:
+
+```
+drwxr-xr-x  2 ec2-user ec2-user 4096 ...  apps
+```
+
+> **Expected Output**: NFS server terminal showing `ls -la /mnt/` with `/mnt/apps` owned by `ec2-user`.
+> ![Terminal — NFS server showing ls -la /mnt/ output with /mnt/apps directory owned by ec2-user ec2-user](screenshoots/nfs-apps-permissions.png)
+
+**86.** Type `exit` to leave the NFS server and return to your local terminal.
+
+---
+
 ## Screenshots Reference
 
 | # | File | Description |
