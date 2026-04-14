@@ -552,6 +552,50 @@ Finished: SUCCESS
 
 ---
 
+## Phase 6: Configure Jenkins to Deploy Files to the NFS Server
+
+At this point Jenkins can pull code from GitHub automatically. The next step is to make Jenkins copy those files to `/mnt/apps` on the NFS Server after every successful build. Because both Web Servers mount `/mnt/apps` as `/var/www`, updating the NFS Server instantly updates the live website on all Web Servers.
+
+This is done using the **Publish Over SSH** Jenkins plugin, which transfers files from the Jenkins workspace to a remote server over SSH after each build.
+
+---
+
+### 6.1 Install the Publish Over SSH Plugin
+
+**58.** In the Jenkins left sidebar, click **"Manage Jenkins"**.
+
+**59.** Click **"Plugins"** (puzzle piece icon).
+
+**60.** Click the **"Available plugins"** tab.
+
+**61.** In the search box, type `Publish Over SSH`.
+
+**62.** Check the checkbox next to **"Publish Over SSH"** in the results list.
+
+**63.** Click **"Install"** and wait for all items to show **"Success"**.
+
+| Item | Status |
+|---|---|
+| Infrastructure plugin for Publish Over X | Success |
+| JSch dependency | Success |
+| Publish Over SSH | Success |
+| Loading plugin extensions | Success |
+
+> **Expected Output**: Jenkins plugin download progress page showing all Publish Over SSH dependencies installed with **Success** status.
+> ![Browser — Jenkins plugin Download progress page showing Publish Over SSH and all its dependencies installed with Success status](screenshoots/publish-over-ssh-installed.png)
+
+---
+
+### 6.2 Get the NFS Server's Private IP
+
+**64.** Go to **AWS Console** → **EC2** → **Instances** → click on **`Project7-NFS`**.
+
+**65.** In the details panel at the bottom, click the **"Details"** tab and find **"Private IPv4 address"** (e.g. `172.31.x.x`). Write it down.
+
+> **Note**: We use the **private IP** because Jenkins and the NFS server are in the same AWS VPC. They communicate internally without going through the public internet — faster and more secure.
+
+---
+
 ## Screenshots Reference
 
 | # | File | Description |
