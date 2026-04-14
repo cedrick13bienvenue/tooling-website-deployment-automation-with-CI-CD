@@ -619,6 +619,49 @@ Before Jenkins can copy files to the NFS server, the NFS server's Security Group
 
 ---
 
+### 6.4 Configure the SSH Connection to the NFS Server in Jenkins
+
+**71.** In Jenkins, click **"Manage Jenkins"** → **"System"** (wrench icon).
+
+**72.** Scroll all the way down to the section titled **"Publish over SSH"**.
+
+**73.** Under **"SSH Servers"**, click **"Add"**. A form expands — fill it in:
+
+| Field | Value |
+|---|---|
+| **Name** | `NFS-Server` |
+| **Hostname** | Private IP of `Project7-NFS` (e.g. `172.31.x.x`) |
+| **Username** | `ec2-user` |
+| **Remote Directory** | `/mnt/apps` |
+
+> **Note**: The NFS server runs RHEL — its default SSH user is `ec2-user`, not `ubuntu`.
+
+**74.** Click **"Advanced"** (small link below the fields):
+- Check **"Use password authentication, or use a different key"**
+- A **Key** text area appears — open your terminal and run:
+
+```bash
+cat /path/to/cedriq-ec2.pem
+```
+
+- Copy the entire output from `-----BEGIN RSA PRIVATE KEY-----` to `-----END RSA PRIVATE KEY-----` and paste it into the **Key** field.
+
+**75.** Click **"Test Configuration"**.
+
+It should return **"Success"**. If it fails:
+
+| Error | Fix |
+|---|---|
+| `Auth fail` | Double-check Username is `ec2-user` and the full key was pasted including header and footer lines |
+| `Connection refused` / `timed out` | The NFS security group inbound rule from Step 6.3 was not saved correctly — re-check it |
+
+> **Expected Output**: Jenkins "Configure System" page showing the Publish over SSH section with NFS-Server config filled in and **"Success"** after clicking "Test Configuration".
+> ![Browser — Jenkins Configure System page showing Publish over SSH section with NFS-Server hostname, ec2-user, /mnt/apps filled in and Test Configuration showing Success](screenshoots/jenkins-ssh-config-success.png)
+
+**76.** Click **"Save"** at the bottom of the page.
+
+---
+
 ## Screenshots Reference
 
 | # | File | Description |
