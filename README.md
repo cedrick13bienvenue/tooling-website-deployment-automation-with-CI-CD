@@ -594,6 +594,29 @@ This is done using the **Publish Over SSH** Jenkins plugin, which transfers file
 
 > **Note**: We use the **private IP** because Jenkins and the NFS server are in the same AWS VPC. They communicate internally without going through the public internet — faster and more secure.
 
+### 6.3 Allow Jenkins Server to SSH into the NFS Server
+
+Before Jenkins can copy files to the NFS server, the NFS server's Security Group must allow incoming SSH connections from the Jenkins server.
+
+**66.** In the AWS EC2 Instances list, click on **`Project7-NFS`**.
+
+**67.** In the details panel at the bottom, click the **"Security"** tab.
+
+**68.** Click on the Security Group name (e.g. `Project7-NFS-SG`) to open it.
+
+**69.** Click **"Edit inbound rules"** → **"Add rule"** and fill in:
+
+| Field | Value |
+|---|---|
+| **Type** | `SSH` |
+| **Protocol** | `TCP` (auto-filled) |
+| **Port range** | `22` (auto-filled) |
+| **Source** | Custom → search for and select `Project9-Jenkins-SG` |
+
+> **Note**: Using the Jenkins Security Group as the source (instead of an IP address) means the rule automatically stays valid even when the Jenkins server gets a new public IP after a restart.
+
+**70.** Click **"Save rules"**.
+
 ---
 
 ## Screenshots Reference
