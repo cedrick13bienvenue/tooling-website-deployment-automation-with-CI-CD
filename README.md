@@ -537,13 +537,8 @@ git push origin master
 
 **56.** Switch to your Jenkins browser tab. Within 5–10 seconds, **Build #2** should appear in the Build History — triggered **automatically** by the GitHub webhook, without clicking "Build Now".
 
-> **Expected Output**: Jenkins job page showing Build #2 triggered automatically with a blue circle (success).
-> ![Browser — Jenkins tooling-website job page showing Build #2 in the Build History with a blue circle triggered automatically after the git push](screenshoots/jenkins-build2-auto-triggered.png)
-
-**57.** Click on **#2** → **"Console Output"** and confirm the build ends with `Finished: SUCCESS`.
-
-> **Expected Output**: Jenkins Console Output for Build #2 showing the automatic webhook trigger and `Finished: SUCCESS`.
-> ![Browser — Jenkins Console Output for Build #2 showing files pulled from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build2-console-output.png)
+> **Expected Output**: Jenkins job page showing a new build triggered automatically with a blue circle (success).
+> ![Browser — Jenkins tooling-website job Console Output showing files pulled from tooling-jenkins and Finished: SUCCESS at the bottom after an automatic webhook trigger](screenshoots/jenkins-build-auto-triggered.png)
 
 ---
 
