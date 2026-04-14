@@ -535,10 +535,20 @@ git push origin master
 
 > **Note**: When prompted for a password during `git push`, use your GitHub Personal Access Token (`ghp_...`), not your GitHub account password.
 
-**56.** Switch to your Jenkins browser tab. Within 5–10 seconds, **Build #2** should appear in the Build History — triggered **automatically** by the GitHub webhook, without clicking "Build Now".
+**56.** Switch to your Jenkins browser tab. Within 5–10 seconds a new build appears in the Build History — triggered **automatically** by the GitHub webhook without clicking "Build Now".
 
-> **Expected Output**: Jenkins job page showing a new build triggered automatically with a blue circle (success).
-> ![Browser — Jenkins tooling-website job Console Output showing files pulled from tooling-jenkins and Finished: SUCCESS at the bottom after an automatic webhook trigger](screenshoots/jenkins-build-auto-triggered.png)
+**57.** Click on the build number → **"Console Output"**. Read through the output and confirm:
+- Jenkins fetched the latest code from `https://github.com/cedrick13bienvenue/tooling-jenkins.git`
+- The file listing from `ls -la $WORKSPACE` shows all repo files with current timestamps
+- The commit message from your push is visible (e.g. `Commit message: test jenkins webhook trigger`)
+- The very last line reads:
+
+```
+Finished: SUCCESS
+```
+
+> **Expected Output**: Jenkins Console Output showing files fetched from the `tooling-jenkins` repo and `Finished: SUCCESS` at the bottom — triggered automatically by the GitHub webhook.
+> ![Browser — Jenkins Console Output showing automatic webhook-triggered build with files fetched from tooling-jenkins and Finished: SUCCESS at the bottom](screenshoots/jenkins-build-auto-triggered.png)
 
 ---
 
