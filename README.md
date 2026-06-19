@@ -117,7 +117,7 @@ All servers from Projects 7 and 8 listed below must be **Running** with **2/2 st
 
 ### 1.1 Create the EC2 Instance
 
-**1.** Sign in to the **AWS Management Console** → navigate to **EC2** → click **Instances** → click **Launch instances**.
+**1.** Log in to the **AWS Management Console** → go to **EC2** → select **Instances** → click **Launch instances**.
 
 **2.** Under **Name and tags**:
 
@@ -163,7 +163,7 @@ All servers from Projects 7 and 8 listed below must be **Running** with **2/2 st
 | `SSH` | `TCP` | `22` | `My IP` |
 | `Custom TCP` | `TCP` | `8080` | `Anywhere-IPv4` (0.0.0.0/0) |
 
-> **Note**: Port 8080 is the default port Jenkins listens on. It must be open so you can access the Jenkins UI from your browser and so GitHub webhooks can reach it.
+> **Note**: Port 8080 is where Jenkins listens by default. It needs to be open so you can reach the Jenkins UI in your browser and so GitHub webhooks can connect to it.
 
 **7.** Under **Configure storage**:
 
@@ -172,13 +172,13 @@ All servers from Projects 7 and 8 listed below must be **Running** with **2/2 st
 | **Root volume size** | `8 GiB` (default) |
 | **Volume type** | `gp3` |
 
-**8.** Click **Launch instance**. Click **View all instances** to return to the instances list. Wait until:
+**8.** Click **Launch instance**. Then click **View all instances** to return to the list. Wait until:
 - **Instance State** = `Running`
 - **Status checks** = `2/2 checks passed`
 
-**9.** Click on the `Project9-Jenkins` instance row to select it. In the details panel at the bottom, note down the **Public IPv4 address** — you will use this throughout the project.
+**9.** Click the `Project9-Jenkins` instance row to select it. In the details panel below, copy the **Public IPv4 address** — you will need this throughout the project.
 
-> **Expected Output**: EC2 console showing `Project9-Jenkins` in `Running` state with `2/2 checks passed` and the Public IPv4 address visible in the details panel.
+> **Expected Output**: EC2 console showing `Project9-Jenkins` in `Running` state with `2/2 checks passed` and the Public IPv4 address displayed in the details panel.
 > ![AWS EC2 console — Project9-Jenkins instance in Running state with 2/2 status checks passed and Public IPv4 address visible in the details panel](screenshoots/jenkins-instance-running.png)
 
 ---
