@@ -487,7 +487,7 @@ ls -la $WORKSPACE
 https://github.com/cedrick13bienvenue/tooling-jenkins
 ```
 
-**49.** Click the **Settings** tab → in the left sidebar click **"Webhooks"** → click **"Add webhook"**.
+**49.** Open the **Settings** tab → select **"Webhooks"** from the left sidebar → click **"Add webhook"**.
 
 **50.** Fill in the webhook form:
 
@@ -499,11 +499,11 @@ https://github.com/cedrick13bienvenue/tooling-jenkins
 | **Which events trigger this webhook?** | `Just the push event` |
 | **Active** | Checked |
 
-> **Note**: The trailing `/` at the end of the Payload URL is required. Replace `<JENKINS-PUBLIC-IP>` with the actual public IP of your `Project9-Jenkins` instance.
+> **Note**: Do not omit the trailing `/` in the Payload URL. Substitute `<JENKINS-PUBLIC-IP>` with the actual public IP of your `Project9-Jenkins` instance.
 
 **51.** Click **"Add webhook"**.
 
-**52.** GitHub automatically sends a `ping` event to Jenkins to verify the connection. Click on the webhook entry, scroll down to **"Recent Deliveries"**, and confirm the ping delivery shows a **green checkmark** with **Response code: 200**.
+**52.** GitHub will automatically fire a `ping` event to Jenkins to test the connection. Click the webhook entry, scroll to **"Recent Deliveries"**, and verify that the ping shows a **green checkmark** with **Response code: 200**.
 
 > **Expected Output**: GitHub webhook "Recent Deliveries" showing a ping event with a green checkmark and Response code: 200.
 > ![GitHub — webhook Recent Deliveries section showing the ping event with a green checkmark and Response tab displaying Response code 200](screenshoots/github-webhook-ping-success.png)
@@ -533,9 +533,9 @@ git commit -m "test jenkins webhook trigger"
 git push origin master
 ```
 
-> **Note**: When prompted for a password during `git push`, use your GitHub Personal Access Token (`ghp_...`), not your GitHub account password.
+> **Note**: If prompted for a password during `git push`, enter your GitHub Personal Access Token (`ghp_...`) — not your GitHub account password.
 
-**56.** Switch to your Jenkins browser tab. Within 5–10 seconds a new build appears in the Build History — triggered **automatically** by the GitHub webhook without clicking "Build Now".
+**56.** Switch over to your Jenkins browser tab. A new build should appear in the Build History within 5–10 seconds — kicked off **automatically** by the GitHub webhook, with no manual trigger needed.
 
 **57.** Click on the build number → **"Console Output"**. Read through the output and confirm:
 - Jenkins fetched the latest code from `https://github.com/cedrick13bienvenue/tooling-jenkins.git`
