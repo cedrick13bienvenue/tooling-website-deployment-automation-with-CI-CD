@@ -695,33 +695,33 @@ echo "Build workspace: $WORKSPACE"
 
 ### 6.6 Set Correct Permissions on the NFS Server
 
-Jenkins logs into the NFS server as `ec2-user` and writes files to `/mnt/apps`. If `ec2-user` does not own that directory, every build will fail with a **"Permission denied"** error. Fix this before running the pipeline.
+Jenkins connects to the NFS server as `ec2-user` and writes files to `/mnt/apps`. If `ec2-user` does not have ownership of that directory, all builds will fail with a **"Permission denied"** error. Resolve this before running the pipeline.
 
-**82.** SSH into the NFS server from your terminal:
+**82.** Connect to the NFS server from your terminal:
 
 ```bash
 ssh -i /path/to/cedriq-ec2.pem ec2-user@<NFS-PUBLIC-IP>
 ```
 
-**83.** Check the current ownership of `/mnt/apps`:
+**83.** Inspect the current ownership of `/mnt/apps`:
 
 ```bash
 ls -la /mnt/
 ```
 
-You will likely see `/mnt/apps` owned by `root`:
+The output will likely show `/mnt/apps` owned by `root`:
 
 ```
 drwxr-xr-x  2 root     root     4096 ...  apps
 ```
 
-**84.** Change ownership so `ec2-user` can write to it:
+**84.** Transfer ownership to `ec2-user` so it can write to the directory:
 
 ```bash
 sudo chown -R ec2-user:ec2-user /mnt/apps
 ```
 
-**85.** Verify the change:
+**85.** Confirm the ownership has been updated:
 
 ```bash
 ls -la /mnt/
@@ -736,23 +736,23 @@ drwxr-xr-x  2 ec2-user ec2-user 4096 ...  apps
 > **Expected Output**: NFS server terminal showing `ls -la /mnt/` with `/mnt/apps` owned by `ec2-user`.
 > ![Terminal — NFS server showing ls -la /mnt/ output with /mnt/apps directory owned by ec2-user ec2-user](screenshoots/nfs-apps-permissions.png)
 
-**86.** Type `exit` to leave the NFS server and return to your local terminal.
+**86.** Run `exit` to disconnect from the NFS server and return to your local terminal.
 
 ---
 
 ## Phase 7: End-to-End Test — Push Code and Watch the Full Pipeline Run
 
-This is the final test that confirms the entire CI/CD pipeline works. A single `git push` from your local machine should trigger Jenkins to automatically pull the code and deploy it to the NFS server — with no manual steps in between.
+This final test confirms that the complete CI/CD pipeline is functioning. A single `git push` from your local machine should cause Jenkins to automatically retrieve the code and deploy it to the NFS server — with no manual intervention required.
 
 ### 7.1 Push a Code Change
 
-**87.** On your local machine, go into your `tooling-jenkins` folder:
+**87.** From your local machine, navigate to your `tooling-jenkins` folder:
 
 ```bash
 cd /path/to/tooling-jenkins
 ```
 
-**88.** Add a comment to the main PHP file so you can verify the deployment:
+**88.** Append a comment to the main PHP file to verify the deployment landed:
 
 ```bash
 echo "<!-- Deployed by Jenkins - Project 9 -->" >> html/index.php
@@ -770,9 +770,9 @@ git push origin master
 
 ### 7.2 Watch Jenkins React Automatically
 
-**90.** Switch to your Jenkins browser tab immediately after pushing.
+**90.** Jump to your Jenkins browser tab right after pushing.
 
-**91.** Within 5–10 seconds a new build appears in the Build History — triggered automatically by the GitHub webhook.
+**91.** A new build should appear in the Build History within 5–10 seconds — automatically fired by the GitHub webhook.
 
 **92.** Click on the build → **"Console Output"**. Read through it carefully and confirm all three stages completed:
 
@@ -797,25 +797,25 @@ Finished: SUCCESS
 
 ### 7.3 Verify Files Arrived on the NFS Server
 
-**93.** SSH into the NFS server:
+**93.** Connect to the NFS server:
 
 ```bash
 ssh -i /path/to/cedriq-ec2.pem ec2-user@<NFS-PUBLIC-IP>
 ```
 
-**94.** List the contents of `/mnt/apps` and check the timestamps — they should show the current time:
+**94.** List the contents of `/mnt/apps` and review the timestamps — they should reflect the current time:
 
 ```bash
 ls -la /mnt/apps/
 ```
 
-**95.** Confirm your specific change made it:
+**95.** Verify that your specific change was deployed:
 
 ```bash
 tail -5 /mnt/apps/html/index.php
 ```
 
-You should see the comment at the bottom:
+The comment should appear at the end of the file:
 
 ```
 <!-- Deployed by Jenkins - Project 9 -->
@@ -824,21 +824,21 @@ You should see the comment at the bottom:
 > **Expected Output**: NFS server terminal showing `ls -la /mnt/apps/` with today's timestamps and `tail -5 /mnt/apps/html/index.php` showing the deployed comment.
 > ![Terminal — NFS server showing ls -la /mnt/apps/ with current timestamps and tail of index.php showing the Jenkins deployment comment](screenshoots/nfs-files-deployed.png)
 
-**96.** Type `exit` to leave the NFS server.
+**96.** Run `exit` to disconnect from the NFS server.
 
 ---
 
 ### 7.4 Confirm the Live Website
 
-**97.** Open your browser and visit the Tooling Website through the Load Balancer:
+**97.** Open a browser and access the Tooling Website via the Load Balancer:
 
 ```
 http://<LB-PUBLIC-IP>/index.php
 ```
 
-Replace `<LB-PUBLIC-IP>` with the public IP of your `Project-8-apache-lb` instance from the AWS Console.
+Use the public IP of your `Project-8-apache-lb` instance from the AWS Console in place of `<LB-PUBLIC-IP>`.
 
-**98.** The Tooling Website login page should load — confirming the complete pipeline is working:
+**98.** The Tooling Website login page should appear — verifying that the full pipeline is operational:
 - GitHub webhook triggered Jenkins on push ✓
 - Jenkins pulled the latest code ✓
 - Jenkins deployed it to `/mnt/apps` on the NFS server ✓
