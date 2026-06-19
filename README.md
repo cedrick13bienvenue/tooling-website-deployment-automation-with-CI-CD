@@ -377,15 +377,15 @@ This brings you to the Jenkins dashboard — the main interface with the left si
 
 ### 4.1 Prepare the GitHub Repository
 
-**32.** Fork the tooling repository from the Darey.io GitHub account:
+**32.** Fork the tooling repository from the Darey.io account on GitHub:
 
 ```
 https://github.com/darey-io/tooling
 ```
 
-On the fork page, set the **Repository name** to `tooling-jenkins`, ensure your GitHub account is selected as the owner, then click **Create fork**.
+On the fork page, enter `tooling-jenkins` as the **Repository name**, confirm your GitHub account is the owner, then click **Create fork**.
 
-**33.** After forking, rename the repository if needed by going to the repo **Settings** → change the name to `tooling-jenkins` → click **Rename**. Your repo will now be at:
+**33.** After forking, update the repository name if necessary via the repo **Settings** → set the name to `tooling-jenkins` → click **Rename**. Your repository will then be available at:
 
 ```
 https://github.com/cedrick13bienvenue/tooling-jenkins
@@ -410,7 +410,7 @@ Click **OK**.
 
 ### 4.3 Configure Source Code Management
 
-**36.** On the job configuration page, scroll to **"Source Code Management"** and select the **Git** radio button.
+**36.** On the job configuration page, navigate to **"Source Code Management"** and choose the **Git** radio button.
 
 **37.** In the **Repository URL** field, enter:
 
@@ -418,7 +418,7 @@ Click **OK**.
 https://github.com/cedrick13bienvenue/tooling-jenkins.git
 ```
 
-> **Note**: Include the `.git` suffix. A red error warning will appear under the field — this is expected until credentials are added.
+> **Note**: The `.git` suffix is required. A red error warning will appear beneath the field — this is normal until credentials are provided.
 
 **38.** Next to the **Credentials** dropdown, click **"+ Add"** → **"Global"** → select **"Username with password"** from the credential type list → click **Next**.
 
@@ -431,11 +431,11 @@ https://github.com/cedrick13bienvenue/tooling-jenkins.git
 | **Password** | Your GitHub Personal Access Token (`ghp_...`) |
 | **Description** | `GitHub PAT` |
 
-> **Note**: GitHub no longer accepts your account password for Git operations. You must use a **Personal Access Token (PAT)**. To create one: GitHub → Profile → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic). Set the `repo` scope and copy the token immediately — GitHub will not show it again.
+> **Note**: GitHub does not accept your account password for Git operations anymore. A **Personal Access Token (PAT)** is required. To generate one: GitHub → Profile → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic). Enable the `repo` scope and copy the token right away — GitHub only shows it once.
 
 Click **Create**.
 
-**40.** In the **Credentials** dropdown, select the credentials you just added. The red error warning under the Repository URL should disappear — confirming Jenkins can access the repo.
+**40.** From the **Credentials** dropdown, pick the credentials you just created. The red warning under the Repository URL should clear — indicating Jenkins can access the repository.
 
 **41.** In the **"Branch Specifier"** field, change `*/master` to match your repo's default branch:
 
@@ -443,7 +443,7 @@ Click **Create**.
 */master
 ```
 
-> **Note**: The `darey-io/tooling` repo uses `master` as its default branch. Verify the branch name by checking the branch dropdown on your GitHub repo page.
+> **Note**: The `darey-io/tooling` repository defaults to `master`. Confirm the branch name by checking the branch selector on your GitHub repository page.
 
 **42.** Scroll to **"Build Triggers"** and check **"GitHub hook trigger for GITScm polling"**.
 
@@ -465,7 +465,7 @@ ls -la $WORKSPACE
 
 **45.** On the `tooling-website` job page, click **"Build Now"** in the left sidebar.
 
-**46.** In the **Build History** panel at the bottom left, wait for **#1** to finish. A **blue circle** means success; a **red circle** means failure.
+**46.** In the **Build History** panel at the lower left, wait for **#1** to complete. A **blue circle** indicates success; a **red circle** means failure.
 
 **47.** Click on **#1** → **"Console Output"** and verify:
 - Jenkins cloned your `tooling-jenkins` repository
