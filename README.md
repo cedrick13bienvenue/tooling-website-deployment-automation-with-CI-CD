@@ -34,13 +34,13 @@ In this project, Jenkins serves as the CI server that drives the deployment pipe
 
 ## Architecture
 
-This project adds a Jenkins Server and a GitHub webhook to the existing Project 8 infrastructure. The updated deployment flow works as follows:
+This project extends the Project 8 infrastructure by introducing a Jenkins Server and a GitHub webhook. The revised deployment flow operates as follows:
 
 1. A developer pushes code to the GitHub `tooling-jenkins` repository
-2. GitHub sends a webhook notification to the Jenkins Server
-3. Jenkins pulls the latest code and copies it to `/mnt/apps` on the NFS Server via SSH
-4. Both Web Servers (which mount `/mnt/apps` as `/var/www`) immediately serve the updated code
-5. Client traffic continues to flow through the Load Balancer as before
+2. GitHub delivers a webhook event to the Jenkins Server
+3. Jenkins fetches the latest code and transfers it to `/mnt/apps` on the NFS Server over SSH
+4. Both Web Servers, which mount `/mnt/apps` as `/var/www`, immediately begin serving the updated code
+5. Client traffic continues to pass through the Load Balancer unchanged
 
 ```
           GitHub Repository
