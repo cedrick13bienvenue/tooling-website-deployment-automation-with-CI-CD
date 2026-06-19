@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-This project extends the **Propitix Tooling Website** infrastructure built in previous projects by introducing **Continuous Integration (CI)** using Jenkins. In the previous project (Project 8), a Load Balancer was placed in front of two Web Servers that both mount shared storage from an NFS Server. Deployments were done manually — any code update required a developer to manually copy files to the NFS server.
+This project builds on the **Propitix Tooling Website** infrastructure established in earlier projects by bringing in **Continuous Integration (CI)** through Jenkins. In Project 8, a Load Balancer was positioned in front of two Web Servers that both mount shared storage from an NFS Server. Updates were handled manually — every code change required a developer to copy files to the NFS server by hand.
 
-This project eliminates manual deployments entirely. A **Jenkins server** is added to the infrastructure and connected to the GitHub repository `https://github.com/cedrick13bienvenue/tooling-jenkins` via a **webhook**. From this point forward, every `git push` to the repository automatically triggers Jenkins to pull the latest code and deploy it directly to `/mnt/apps` on the NFS Server — which instantly updates all Web Servers simultaneously, since they both mount that directory.
+This project does away with manual deployments altogether. A **Jenkins server** is added to the stack and connected to the GitHub repository `https://github.com/cedrick13bienvenue/tooling-jenkins` via a **webhook**. From here on, every `git push` to the repository automatically triggers Jenkins to fetch the latest code and push it to `/mnt/apps` on the NFS Server — instantly refreshing all Web Servers at once, since they both mount that directory.
 
-**Continuous Integration (CI)** is a software development strategy that increases the speed and quality of software delivery by having developers commit code in small increments (at least daily), which is then automatically built and tested before it is merged with the shared repository. The goal is to catch integration issues early and deliver working software faster.
+**Continuous Integration (CI)** is a software development practice that raises the speed and quality of software delivery by having developers commit code in small increments (at least once daily), which is then automatically built and tested before being merged into the shared repository. The aim is to catch integration problems early and ship working software faster.
 
-In this project, Jenkins acts as the CI server that automates the deployment pipeline from code push to live website update — with zero manual intervention after the initial setup.
+In this project, Jenkins serves as the CI server that drives the deployment pipeline from code push to live website update — requiring no manual steps after the initial configuration.
 
 ---
 
