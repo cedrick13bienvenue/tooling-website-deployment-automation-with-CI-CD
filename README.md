@@ -187,33 +187,33 @@ All servers from Projects 7 and 8 listed below must be **Running** with **2/2 st
 
 ### 2.1 SSH Into the Jenkins Server
 
-**10.** Open your terminal and navigate to the folder containing your `.pem` key:
+**10.** Open a terminal window and go to the directory containing your `.pem` key:
 
 ```bash
 cd /path/to/your/key
 ```
 
-**11.** Set the correct permissions on the key file (required by SSH):
+**11.** Apply the correct permissions to the key file (SSH requires this):
 
 ```bash
 chmod 400 cedriq-ec2.pem
 ```
 
-**12.** Connect to the Jenkins server — replace `<JENKINS-PUBLIC-IP>` with your actual public IP:
+**12.** SSH into the Jenkins server — swap `<JENKINS-PUBLIC-IP>` for your actual public IP:
 
 ```bash
 ssh -i cedriq-ec2.pem ubuntu@<JENKINS-PUBLIC-IP>
 ```
 
-When prompted `Are you sure you want to continue connecting (yes/no)?` type `yes` and press Enter.
+When asked `Are you sure you want to continue connecting (yes/no)?` enter `yes` and press Enter.
 
-> **Note**: Ubuntu EC2 instances use `ubuntu` as the default SSH user.
+> **Note**: The default SSH user for Ubuntu EC2 instances is `ubuntu`.
 
 ---
 
 ### 2.2 Update the Server
 
-**13.** Always update the package list before installing anything:
+**13.** Update the package index before installing any software:
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -223,14 +223,14 @@ sudo apt update && sudo apt upgrade -y
 
 ### 2.3 Install Java
 
-Jenkins is a Java application and requires Java to run. Install OpenJDK 17:
+Jenkins runs on Java, so Java must be installed first. Install OpenJDK 17:
 
 **14.**
 ```bash
 sudo apt install fontconfig openjdk-17-jre -y
 ```
 
-**15.** Verify the installation:
+**15.** Confirm the installation succeeded:
 
 ```bash
 java -version
@@ -250,20 +250,20 @@ OpenJDK 64-Bit Server VM (build 17.0.x+x-Ubuntu-..., mixed mode, sharing)
 
 ### 2.4 Install Jenkins
 
-**16.** Add the Jenkins repository signing key so Ubuntu trusts the Jenkins packages:
+**16.** Import the Jenkins repository signing key so Ubuntu can verify the Jenkins packages:
 
 ```bash
 sudo gpg --keyserver keyserver.ubuntu.com --recv-keys 7198F4B714ABFC68
 sudo gpg --export 7198F4B714ABFC68 | sudo tee /usr/share/keyrings/jenkins-keyring.gpg > /dev/null
 ```
 
-**17.** Add the Jenkins repository to apt sources:
+**17.** Register the Jenkins repository in apt sources:
 
 ```bash
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 ```
 
-**18.** Update apt to pick up the new Jenkins repository:
+**18.** Refresh the apt package index to include the new Jenkins repository:
 
 ```bash
 sudo apt update
@@ -279,7 +279,7 @@ sudo apt install jenkins -y
 
 ### 2.5 Start and Enable Jenkins
 
-**20.** Enable Jenkins to start automatically on every server reboot:
+**20.** Configure Jenkins to start automatically on boot:
 
 ```bash
 sudo systemctl enable jenkins
@@ -291,13 +291,13 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 ```
 
-**22.** Verify Jenkins is running:
+**22.** Confirm Jenkins is active:
 
 ```bash
 sudo systemctl status jenkins
 ```
 
-Look for the line: `Active: active (running)` — it should appear in green. Press `q` to exit.
+Check for the line `Active: active (running)` — it should be highlighted in green. Press `q` to quit.
 
 > **Expected Output**: Terminal showing `sudo systemctl status jenkins` with `Active: active (running)` in green.
 > ![Terminal — sudo systemctl status jenkins output showing active (running) in green with the Jenkins process details](screenshoots/jenkins-status-active.png)
