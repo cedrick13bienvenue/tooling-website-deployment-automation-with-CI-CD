@@ -554,9 +554,9 @@ Finished: SUCCESS
 
 ## Phase 6: Configure Jenkins to Deploy Files to the NFS Server
 
-At this point Jenkins can pull code from GitHub automatically. The next step is to make Jenkins copy those files to `/mnt/apps` on the NFS Server after every successful build. Because both Web Servers mount `/mnt/apps` as `/var/www`, updating the NFS Server instantly updates the live website on all Web Servers.
+Jenkins can now pull code from GitHub automatically. The remaining step is to have Jenkins copy those files to `/mnt/apps` on the NFS Server after each successful build. Since both Web Servers mount `/mnt/apps` as `/var/www`, any update to the NFS Server is immediately reflected on the live website across all Web Servers.
 
-This is done using the **Publish Over SSH** Jenkins plugin, which transfers files from the Jenkins workspace to a remote server over SSH after each build.
+This is handled by the **Publish Over SSH** Jenkins plugin, which copies files from the Jenkins workspace to a remote server via SSH after every build.
 
 ---
 
@@ -570,9 +570,9 @@ This is done using the **Publish Over SSH** Jenkins plugin, which transfers file
 
 **61.** In the search box, type `Publish Over SSH`.
 
-**62.** Check the checkbox next to **"Publish Over SSH"** in the results list.
+**62.** Tick the checkbox next to **"Publish Over SSH"** in the search results.
 
-**63.** Click **"Install"** and wait for all items to show **"Success"**.
+**63.** Click **"Install"** and wait until all items display **"Success"**.
 
 | Item | Status |
 |---|---|
@@ -590,13 +590,13 @@ This is done using the **Publish Over SSH** Jenkins plugin, which transfers file
 
 **64.** Go to **AWS Console** → **EC2** → **Instances** → click on **`Project7-NFS`**.
 
-**65.** In the details panel at the bottom, click the **"Details"** tab and find **"Private IPv4 address"** (e.g. `172.31.x.x`). Write it down.
+**65.** In the details panel at the bottom, select the **"Details"** tab and locate the **"Private IPv4 address"** (e.g. `172.31.x.x`). Note it down.
 
-> **Note**: We use the **private IP** because Jenkins and the NFS server are in the same AWS VPC. They communicate internally without going through the public internet — faster and more secure.
+> **Note**: The **private IP** is used here because Jenkins and the NFS server share the same AWS VPC and can communicate directly — without routing traffic over the public internet, which is both faster and more secure.
 
 ### 6.3 Allow Jenkins Server to SSH into the NFS Server
 
-Before Jenkins can copy files to the NFS server, the NFS server's Security Group must allow incoming SSH connections from the Jenkins server.
+For Jenkins to transfer files to the NFS server, the NFS server's Security Group must permit inbound SSH connections from the Jenkins server.
 
 **66.** In the AWS EC2 Instances list, click on **`Project7-NFS`**.
 
@@ -613,7 +613,7 @@ Before Jenkins can copy files to the NFS server, the NFS server's Security Group
 | **Port range** | `22` (auto-filled) |
 | **Source** | Custom → search for and select `Project9-Jenkins-SG` |
 
-> **Note**: Using the Jenkins Security Group as the source (instead of an IP address) means the rule automatically stays valid even when the Jenkins server gets a new public IP after a restart.
+> **Note**: Referencing the Jenkins Security Group as the source (rather than a specific IP) means the rule remains valid even if the Jenkins server's public IP changes after a reboot.
 
 **70.** Click **"Save rules"**.
 
@@ -623,7 +623,7 @@ Before Jenkins can copy files to the NFS server, the NFS server's Security Group
 
 **71.** In Jenkins, click **"Manage Jenkins"** → **"System"** (wrench icon).
 
-**72.** Scroll all the way down to the section titled **"Publish over SSH"**.
+**72.** Scroll to the bottom of the page to find the **"Publish over SSH"** section.
 
 **73.** Under **"SSH Servers"**, click **"Add"**. A form expands — fill it in:
 
@@ -634,11 +634,11 @@ Before Jenkins can copy files to the NFS server, the NFS server's Security Group
 | **Username** | `ec2-user` |
 | **Remote Directory** | `/mnt/apps` |
 
-> **Note**: The NFS server runs RHEL — its default SSH user is `ec2-user`, not `ubuntu`.
+> **Note**: The NFS server runs on RHEL, where the default SSH user is `ec2-user`, not `ubuntu`.
 
 **74.** Click **"Advanced"** (small link below the fields):
 - Check **"Use password authentication, or use a different key"**
-- A **Key** text area appears — open your terminal and run:
+- A **Key** text area will appear — open a terminal and run:
 
 ```bash
 cat /path/to/cedriq-ec2.pem
@@ -648,7 +648,7 @@ cat /path/to/cedriq-ec2.pem
 
 **75.** Click **"Test Configuration"**.
 
-It should return **"Success"**. If it fails:
+This should return **"Success"**. If it does not:
 
 | Error | Fix |
 |---|---|
