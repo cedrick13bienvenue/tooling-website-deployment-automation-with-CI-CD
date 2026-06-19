@@ -308,15 +308,15 @@ Check for the line `Active: active (running)` — it should be highlighted in gr
 
 ### 3.1 Open Jenkins in the Browser
 
-**23.** Open a new tab in your browser and navigate to:
+**23.** Open a new browser tab and go to:
 
 ```
 http://<JENKINS-PUBLIC-IP>:8080
 ```
 
-> **Note**: Use the **Public IPv4 address** of your Jenkins instance — not the private IP (`172.31.x.x`). The private IP is only reachable within the AWS VPC and will time out in your browser.
+> **Note**: Make sure to use the **Public IPv4 address** of your Jenkins instance, not the private IP (`172.31.x.x`). The private IP is only accessible within the AWS VPC and will not load in your browser.
 
-You will see a page titled **"Unlock Jenkins"**.
+The browser will display a page titled **"Unlock Jenkins"**.
 
 > **Expected Output**: Browser showing the Jenkins "Unlock Jenkins" page with the Administrator password field.
 > ![Browser — Jenkins Unlock Jenkins page showing the Administrator password text field and the path to the initialAdminPassword file](screenshoots/jenkins-unlock-page.png)
@@ -325,7 +325,7 @@ You will see a page titled **"Unlock Jenkins"**.
 
 ### 3.2 Retrieve the Initial Admin Password
 
-**24.** Go back to your terminal (still connected to the Jenkins server) and run:
+**24.** Return to your terminal (connected to the Jenkins server) and execute:
 
 ```bash
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
@@ -333,15 +333,15 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 **25.** Copy the long alphanumeric string that is printed (e.g. `a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4`).
 
-**26.** Paste it into the **Administrator password** field on the Unlock Jenkins page in your browser, then click **Continue**.
+**26.** Paste it into the **Administrator password** field on the Unlock Jenkins page and click **Continue**.
 
 ---
 
 ### 3.3 Install Suggested Plugins
 
-**27.** On the "Customize Jenkins" page, click **"Install suggested plugins"** (the left option with the cloud icon).
+**27.** On the "Customize Jenkins" screen, click **"Install suggested plugins"** — the left option with the cloud icon.
 
-Jenkins will download and install all standard plugins. This takes 3–7 minutes depending on network speed. Do not refresh the page.
+Jenkins will download and install the standard plugins. This typically takes 3–7 minutes depending on network speed — do not refresh the page.
 
 > **Expected Output**: Jenkins plugin installation progress screen showing multiple plugins with loading bars.
 > ![Browser — Jenkins plugin installation progress screen showing multiple plugins being installed with progress indicators](screenshoots/jenkins-plugins-installing.png)
@@ -350,7 +350,7 @@ Jenkins will download and install all standard plugins. This takes 3–7 minutes
 
 ### 3.4 Create the First Admin User
 
-**28.** After plugins finish installing, fill in the **"Create First Admin User"** form:
+**28.** Once plugins have finished installing, complete the **"Create First Admin User"** form:
 
 | Field | Value |
 |---|---|
@@ -362,11 +362,11 @@ Jenkins will download and install all standard plugins. This takes 3–7 minutes
 
 **29.** Click **"Save and Continue"**.
 
-**30.** On the **"Instance Configuration"** page, leave the Jenkins URL as pre-filled (`http://<JENKINS-PUBLIC-IP>:8080/`) and click **"Save and Finish"**.
+**30.** On the **"Instance Configuration"** screen, keep the Jenkins URL as pre-populated (`http://<JENKINS-PUBLIC-IP>:8080/`) and click **"Save and Finish"**.
 
 **31.** Click **"Start using Jenkins"**.
 
-You are now on the Jenkins dashboard — the main home page with the left sidebar showing **New Item**, **People**, **Build History**, etc.
+This brings you to the Jenkins dashboard — the main interface with the left sidebar containing **New Item**, **People**, **Build History**, and more.
 
 > **Expected Output**: Browser showing the Jenkins main dashboard after first login.
 > ![Browser — Jenkins main dashboard after initial setup showing the Welcome to Jenkins screen with the left sidebar navigation](screenshoots/jenkins-dashboard.png)
