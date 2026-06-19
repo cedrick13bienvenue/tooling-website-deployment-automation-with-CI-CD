@@ -92,7 +92,7 @@ https://github.com/cedrick13bienvenue/tooling-jenkins
 
 ## Prerequisites
 
-The following servers from Projects 7 and 8 must be **Running** with **2/2 status checks passed** in your AWS Console before starting this project:
+All servers from Projects 7 and 8 listed below must be **Running** with **2/2 status checks passed** in the AWS Console before beginning this project:
 
 | Server | Name | Role |
 |---|---|---|
@@ -103,12 +103,12 @@ The following servers from Projects 7 and 8 must be **Running** with **2/2 statu
 | Load Balancer | `Project-8-apache-lb` | Routes traffic to Web Servers |
 
 **Prerequisite checklist:**
-- All 5 instances above are in `Running` state with `2/2 checks passed`
-- The Tooling Website loads correctly at `http://<LB-PUBLIC-IP>/index.php`
-- Both Web Servers have `/var/www` mounted from the NFS Server
-- MySQL is running on the DB Server with the `tooling` database and `webaccess` user intact
+- All 5 instances listed above show `Running` state with `2/2 checks passed`
+- The Tooling Website loads successfully at `http://<LB-PUBLIC-IP>/index.php`
+- Both Web Servers have `/var/www` mounted to the NFS Server
+- MySQL is active on the DB Server with the `tooling` database and `webaccess` user in place
 
-> **Expected Output**: AWS EC2 Instances list showing all 5 existing servers in `Running` state with `2/2 checks passed`.
+> **Expected Output**: AWS EC2 Instances list confirming all 5 pre-existing servers are in `Running` state with `2/2 checks passed`.
 > ![AWS EC2 console — all existing instances (Project7-NFS, Project7-Web-1, Project7-Web-2, Project7-DB, Project-8-apache-lb) showing Running state with 2/2 status checks passed](screenshoots/all-instances-running.png)
 
 ---
